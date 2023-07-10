@@ -1,7 +1,16 @@
+import { Component } from 'react';
+import MarvelService from '../../services/MarvelService';
 import './charList.scss';
 import abyss from '../../resources/img/abyss.jpg';
 
-const CharList = () => {
+class CharList extends Component {
+    state = {
+        char:{}
+    }
+    
+
+
+render() {
     return (
         <div className="char__list">
             <ul className="char__grid">
@@ -46,7 +55,10 @@ const CharList = () => {
                 <div className="inner">load more</div>
             </button>
         </div>
-    )
+
+)
+    
+}    
 }
 
 export default CharList;
