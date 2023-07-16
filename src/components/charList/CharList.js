@@ -19,17 +19,15 @@ class CharList extends Component {
   };
 
   onCharListLoaded = (charList) => {
-    console.log(this, "this");
     this.setState({
       charList,
     });
   };
 
   render() {
-    console.log(this.state.charList, "this.state.charList");
     const elements = this.state.charList.map((char) => {
       const { id, name, thumbnail } = char;
-      return <CharListItem key={id} src={thumbnail} alt={name} name={name} />;
+      return <CharListItem key={id} src={thumbnail} alt={name} name={name} onCharSelected={this.props.onCharSelected} loh={char.id} />;
     });
 
     return (
