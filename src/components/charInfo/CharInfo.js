@@ -1,9 +1,9 @@
-import { Component } from "react";
-import MarvelService from "../../services/MarvelService";
-import Spinner from "../spinner/Spinner";
-import ErrorMessage from "../errorMessage/ErrorMessage";
-import Skeleton from "../skeleton/Skeleton";
-import "./charInfo.scss";
+import { Component } from 'react';
+import MarvelService from '../../services/MarvelService';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import Skeleton from '../skeleton/Skeleton';
+import './charInfo.scss';
 
 class CharInfo extends Component {
   state = {
@@ -33,10 +33,7 @@ class CharInfo extends Component {
       return;
     }
 
-    this.marvelService
-      .getCharacter(charId)
-      .then(this.onCharLoaded)
-      .catch(this.onError);
+    this.marvelService.getCharacter(charId).then(this.onCharLoaded).catch(this.onError);
   };
 
   onCharLoaded = (char) => {
@@ -73,11 +70,11 @@ class CharInfo extends Component {
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki, comics } = char;
 
-  let classNameImg = "char__basics";
-  if (thumbnail.indexOf("image_not_available") !== -1) {
-    classNameImg = "char__basics_img_not_found";
+  let classNameImg = 'char__basics';
+  if (thumbnail.indexOf('image_not_available') !== -1) {
+    classNameImg = 'char__basics_img_not_found';
   } else {
-    classNameImg = "char__basics";
+    classNameImg = 'char__basics';
   }
 
   const items = comics
@@ -104,14 +101,10 @@ const View = ({ char }) => {
           </div>
         </div>
       </div>
-      <div className="char__descr">
-        {description || "Ultron ruined the description, ha-ha-ha"}
-      </div>
+      <div className="char__descr">{description || 'Ultron ruined the description, ha-ha-ha'}</div>
       <div className="char__comics">Comics:</div>
       <ul className="char__comics-list">
-        {comics.length === 0
-          ? "No comics have been made about this sucker yet"
-          : items}
+        {comics.length === 0 ? 'No comics have been made about this sucker yet' : items}
       </ul>
     </>
   );

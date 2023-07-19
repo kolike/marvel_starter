@@ -1,8 +1,8 @@
-import { Component } from "react";
-import PropTypes from "prop-types";
-import "./charList.scss";
-import MarvelService from "../../services/MarvelService";
-import CharListItem from "../charListItem/CharListItem";
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import './charList.scss';
+import MarvelService from '../../services/MarvelService';
+import CharListItem from '../charListItem/CharListItem';
 
 class CharList extends Component {
   state = {
@@ -22,10 +22,7 @@ class CharList extends Component {
 
   updateCharList = (offset) => {
     this.onCharListLoading();
-    this.marvelService
-      .getAllCharacters(offset)
-      .then(this.onCharListLoaded)
-      .catch(this.onError);
+    this.marvelService.getAllCharacters(offset).then(this.onCharListLoaded).catch(this.onError);
   };
 
   onCharListLoading = () => {
@@ -64,7 +61,7 @@ class CharList extends Component {
         <button
           className="button button__main button__long"
           disabled={newItemLoading}
-          style={{ display: charEnded ? "none" : "block" }}
+          style={{ display: charEnded ? 'none' : 'block' }}
           onClick={() => this.updateCharList(offset)}
         >
           <div className="inner">load more</div>

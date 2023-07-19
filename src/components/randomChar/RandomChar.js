@@ -1,9 +1,9 @@
-import { Component } from "react";
-import MarvelService from "../../services/MarvelService";
-import "./randomChar.scss";
-import ErrorMessage from "../errorMessage/ErrorMessage";
-import Spinner from "../spinner/Spinner";
-import mjolnir from "../../resources/img/mjolnir.png";
+import { Component } from 'react';
+import MarvelService from '../../services/MarvelService';
+import './randomChar.scss';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import Spinner from '../spinner/Spinner';
+import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
   state = {
@@ -38,10 +38,7 @@ class RandomChar extends Component {
       loading: true,
     });
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-    this.marvelService
-      .getCharacter(id)
-      .then(this.onCharLoaded)
-      .catch(this.onError);
+    this.marvelService.getCharacter(id).then(this.onCharLoaded).catch(this.onError);
   };
 
   render() {
@@ -76,16 +73,16 @@ class RandomChar extends Component {
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki } = char;
   const imgClassName =
-    thumbnail.indexOf("image_not_available") === -1
-      ? "randomchar__img"
-      : "randomchar__img_not_found";
+    thumbnail.indexOf('image_not_available') === -1
+      ? 'randomchar__img'
+      : 'randomchar__img_not_found';
   return (
     <div className="randomchar__block">
       <img src={thumbnail} alt="Random character" className={imgClassName} />
       <div className="randomchar__info">
         <p className="randomchar__name">{name}</p>
         <p className="randomchar__descr">
-          {description || "Description is classified. Contact a SHIELD agent."}
+          {description || 'Description is classified. Contact a SHIELD agent.'}
         </p>
         <div className="randomchar__btns">
           <a href={homepage} className="button button__main">
