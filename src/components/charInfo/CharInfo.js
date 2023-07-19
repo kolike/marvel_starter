@@ -38,7 +38,6 @@ class CharInfo extends Component {
         .getCharacter(charId)
         .then(this.onCharLoaded)
         .catch(this.onError)
-        
        }
 
     
@@ -84,7 +83,17 @@ const View = ({char}) => {
     } else {
         classNameImg = 'char__basics'
     }
+
+    const items = comics.filter((_, i) => i <=9 )
+    .map((item,i)=> (
+                      <li key = {i} className="char__comics-item">
+                     {item.name}
+                     </li>
+                   )
+    )
+
     return(
+        
     <>
     <div className={classNameImg}>
                 <img src={thumbnail} alt={name}/>
@@ -105,19 +114,7 @@ const View = ({char}) => {
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
-                {   comics.length === 0 ? 'No comics have been drawn about this sucker yet' : comics.map((item,i)=>{
-                     if (i<9) {
-                                return(
-                                   <li key = {i} className="char__comics-item">
-                                  {item.name}
-                                  </li>
-                                )
-                             }
-                        
-                         
-                      
-                    })
-                } 
+                {comics.length === 0 ? 'No comics have been made about this sucker yet' : items} 
                     
                 
                               

@@ -10,7 +10,7 @@ class CharList extends Component {
     loading: false,
     error:false,
     newItemLoading: false,
-    offset : 210,
+    offset : 220,
     charEnded:false
   };
 
@@ -18,15 +18,14 @@ class CharList extends Component {
   marvelService = new MarvelService();
 
   componentDidMount() {
-    this.updateCharList();
+    this.updateCharList(this.state.offset);
   }
 
-  updateCharList = (offset) => {
-    
+  updateCharList = (offset) => { 
+    this.onCharListLoading();
     this.marvelService.getAllCharacters(offset)
     .then(this.onCharListLoaded)
     .catch(this.onError);
-    this.onCharListLoading();
   };
 
   onCharListLoading = () => {
@@ -35,20 +34,14 @@ class CharList extends Component {
     })
   }
 
-
   onCharListLoaded = (newCharList) => {
-    let ended = false;
-    if(newCharList.length<9) {
-      ended = true;
-    }
 
-
-    this.setState(({offset, charList})=> ({
+    this.setState(({offset, charList}) => ({
         charList: [...charList, ...newCharList],
         loading:false,
         newItemLoading:false,
-        offset: offset +9,
-        charEnded: ended
+        offset: offset + 9,
+        charEnded: newCharList.length < 9
       }))
   }
   render() {
