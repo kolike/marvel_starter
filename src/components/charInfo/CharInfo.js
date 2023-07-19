@@ -18,10 +18,13 @@ class CharInfo extends Component {
       componentDidMount(){
         this.updateChar();
       }
-      
-      componentDidUpdate(prevProps, prevState){
-        if (this.props.charId !== prevProps.charId){
+
+      componentDidUpdate(prevProps){
+         if (this.props.charId !== prevProps.charId){   
             this.updateChar();
+            this.setState({
+                loading: true
+              });
         }
       }
 
@@ -35,6 +38,7 @@ class CharInfo extends Component {
         .getCharacter(charId)
         .then(this.onCharLoaded)
         .catch(this.onError)
+        
        }
 
     
@@ -73,9 +77,16 @@ render() {
 }
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
+
+    let classNameImg = 'char__basics';
+    if (thumbnail.indexOf('image_not_available') !== -1) {
+        classNameImg = "char__basics_img_not_found";
+    } else {
+        classNameImg = 'char__basics'
+    }
     return(
     <>
-    <div className="char__basics">
+    <div className={classNameImg}>
                 <img src={thumbnail} alt={name}/>
                 <div>
                     <div className="char__info-name">{name}</div>
@@ -90,19 +101,25 @@ const View = ({char}) => {
                 </div>
             </div>
             <div className="char__descr">
-                {description}           
+                {description || 'Ultron ruined the description, ha-ha-ha'}
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
-                {
-                    comics.map((item,i)=>{
-                        return(
-                            <li key ={i} className="char__comics-item">
-                                {item.name}
-                            </li>
-                        )
+                {   comics.length === 0 ? 'No comics have been drawn about this sucker yet' : comics.map((item,i)=>{
+                     if (i<9) {
+                                return(
+                                   <li key = {i} className="char__comics-item">
+                                  {item.name}
+                                  </li>
+                                )
+                             }
+                        
+                         
+                      
                     })
-                }
+                } 
+                    
+                
                               
             </ul>
     
