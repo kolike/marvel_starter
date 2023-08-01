@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import './randomChar.scss';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
@@ -7,10 +7,8 @@ import mjolnir from '../../resources/img/mjolnir.png';
 
 const RandomChar = () => {
   const [char, setChar] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const marvelService = useMemo(() => new MarvelService());
+  const { loading, error, getCharacter, clearError } = useMarvelService();
 
   useEffect(() => {
     updateChar();
@@ -18,19 +16,12 @@ const RandomChar = () => {
 
   const onCharLoaded = (char) => {
     setChar(char);
-    setLoading(false);
-    setError(false);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
   };
 
   const updateChar = () => {
-    setLoading(true);
+    clearError();
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-    marvelService.getCharacter(id).then(onCharLoaded).catch(onError);
+    getCharacter(id).then(onCharLoaded);
   };
 
   const errorMessage = error ? <ErrorMessage /> : null;
@@ -62,7 +53,7 @@ const RandomChar = () => {
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki } = char;
   const imgClassName =
-    thumbnail.indexOf('image_not_available') === -1
+    thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
       ? 'randomchar__img'
       : 'randomchar__img_not_found';
   return (

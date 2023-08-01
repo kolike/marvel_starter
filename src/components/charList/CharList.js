@@ -1,44 +1,30 @@
 import { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import './charList.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import CharListItem from '../charListItem/CharListItem';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 const CharList = ({ onCharSelected }) => {
   const [charList, setCharList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [newItemLoading, setNewItemLoading] = useState(false);
   const [offset, setOffset] = useState(220);
   const [charEnded, setCharEnded] = useState(false);
 
-  const marvelService = useMemo(() => new MarvelService(), []);
+  const { loading, error, getAllCharacters } = useMarvelService();
 
   useEffect(() => {
-    updateCharList();
+    updateCharList(offset, true);
   }, []);
 
-  const updateCharList = (offset) => {
-    onCharListLoading();
-    marvelService.getAllCharacters(offset).then(onCharListLoaded).catch(onError);
-  };
-
-  const onError = () => {
-    setError(true);
-    setLoading(false);
-    setCharList([]);
-    setNewItemLoading(false);
-  };
-
-  const onCharListLoading = () => {
-    setNewItemLoading(true);
+  const updateCharList = (offset, initial) => {
+    initial ? setNewItemLoading(false) : setNewItemLoading(true);
+    getAllCharacters(offset).then(onCharListLoaded);
   };
 
   const onCharListLoaded = (newCharList) => {
     setCharList((charList) => [...charList, ...newCharList]);
-    setLoading(false);
     setNewItemLoading(false);
     setOffset((offset) => offset + 9);
     setCharEnded(newCharList.length < 9);
@@ -58,13 +44,13 @@ const CharList = ({ onCharSelected }) => {
   });
 
   const errorMessage = error ? <ErrorMessage /> : null;
-  const spinner = loading ? <Spinner /> : null;
-  const content = !(loading || error) ? <ul className="char__grid">{elements}</ul> : null;
+  const spinner = loading && !newItemLoading ? <Spinner /> : null;
+
   return (
     <div className="char__list">
       {errorMessage}
       {spinner}
-      {content}
+      <ul className="char__grid">{elements}</ul>
       <button
         className="button button__main button__long"
         disabled={newItemLoading}
