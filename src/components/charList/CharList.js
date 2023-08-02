@@ -12,9 +12,10 @@ const CharList = ({ onCharSelected }) => {
   const [offset, setOffset] = useState(220);
   const [charEnded, setCharEnded] = useState(false);
 
-  const { loading, error, getAllCharacters } = useMarvelService();
+  const { loading, error, getAllCharacters, clearError } = useMarvelService();
 
   useEffect(() => {
+    clearError();
     updateCharList(offset, true);
   }, []);
 

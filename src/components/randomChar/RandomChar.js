@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import './randomChar.scss';
 import ErrorMessage from '../errorMessage/ErrorMessage';
