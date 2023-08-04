@@ -6,7 +6,7 @@ const useMarvelService = () => {
   const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
   const _apiKey = 'apikey=9b43075eab8aa6697f9f4ccff9e2b743';
 
-  const getAllCharacters = async (offset) => {
+  const getPaginatedCharacters = async (offset) => {
     const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
     return res.data.results.map(_transformCharacter);
   };
@@ -18,20 +18,25 @@ const useMarvelService = () => {
 
   const getPaginatedComics = async (offset) => {
     const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
-    return { items: res.data.results.map(_transformComicsItem), totalCount: res.data.total };
+    return { items: res.data.results.map(_transformComic), totalCount: res.data.total };
   };
 
-  const _transformComicsItem = (comicsItem) => {
+  const getComic = async (id) => {
+    const res = await request(`${_apiBase}comics/${id}?&${_apiKey}`);
+    return _transformComic(res.data.results[0]);
+  };
+
+  const _transformComic = (comic) => {
     return {
-      id: comicsItem.id,
-      title: comicsItem.title,
-      description: comicsItem.description,
-      thumbnail: comicsItem.thumbnail.path + '.' + comicsItem.thumbnail.extension,
-      price: comicsItem.prices[0].price,
-      pageCount: comicsItem.pageCount
-        ? `${comicsItem.pageCount} p.`
+      id: comic.id,
+      title: comic.title,
+      description: comic.description,
+      thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
+      price: comic.prices[0].price,
+      pageCount: comic.pageCount
+        ? `${comic.pageCount} p.`
         : `No information about the number of pages`,
-      language: comicsItem.textObjects.language || 'en-us',
+      language: comic.textObjects.language || 'en-us',
     };
   };
 
@@ -47,7 +52,15 @@ const useMarvelService = () => {
     };
   };
 
-  return { loading, error, getAllCharacters, getCharacter, clearError, getPaginatedComics };
+  return {
+    loading,
+    error,
+    getPaginatedCharacters,
+    getCharacter,
+    clearError,
+    getPaginatedComics,
+    getComic,
+  };
 };
 
 export default useMarvelService;

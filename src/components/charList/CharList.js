@@ -12,7 +12,7 @@ const CharList = ({ onCharSelected }) => {
   const [offset, setOffset] = useState(220);
   const [charEnded, setCharEnded] = useState(false);
 
-  const { loading, error, getAllCharacters, clearError } = useMarvelService();
+  const { loading, error, getPaginatedCharacters, clearError } = useMarvelService();
 
   useEffect(() => {
     clearError();
@@ -21,7 +21,7 @@ const CharList = ({ onCharSelected }) => {
 
   const updateCharList = (offset, initial) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
-    getAllCharacters(offset).then(onCharListLoaded);
+    getPaginatedCharacters(offset).then(onCharListLoaded);
   };
 
   const onCharListLoaded = (newCharList) => {

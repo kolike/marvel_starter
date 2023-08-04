@@ -1,34 +1,32 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './singleComicPage.scss';
-import xMen from '../../resources/img/x-men.png';
 
 const SingleComicPage = () => {
   const { comicId } = useParams();
   const [comic, setComic] = useState(null);
-  const { loading, error, getPaginatedComics, clearError } = useMarvelService();
+  const { loading, error, getComic, clearError } = useMarvelService();
+
   useEffect(() => {
     updateComic();
   }, [comicId]);
 
-  const updateComic = () => {
+  const updateComic = async () => {
     if (!comicId) {
       return;
     }
-    clearError();
-    getPaginatedComics(comicId).then(onComicLoaded);
-  };
 
-  const onComicLoaded = (comic) => {
-    setComic(comic);
+    clearError();
+    setComic(await getComic(comicId));
   };
 
   const errorMessage = error ? <ErrorMessage /> : null;
   const spinner = loading ? <Spinner /> : null;
   const content = !(loading || error || !comic) ? <View comic={comic} /> : null;
+
   return (
     <>
       {errorMessage}
@@ -40,7 +38,6 @@ const SingleComicPage = () => {
 
 const View = ({ comic }) => {
   const { title, description, price, thumbnail, pageCount, language } = comic;
-  console.log(comic);
   return (
     <div className="single-comic">
       <img src={thumbnail} alt={title} className="single-comic__img" />
