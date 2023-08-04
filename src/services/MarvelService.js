@@ -28,6 +28,10 @@ const useMarvelService = () => {
       description: comicsItem.description,
       thumbnail: comicsItem.thumbnail.path + '.' + comicsItem.thumbnail.extension,
       price: comicsItem.prices[0].price,
+      pageCount: comicsItem.pageCount
+        ? `${comicsItem.pageCount} p.`
+        : `No information about the number of pages`,
+      language: comicsItem.textObjects.language || 'en-us',
     };
   };
 
