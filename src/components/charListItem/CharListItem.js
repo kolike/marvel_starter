@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-
+import { useContext, useRef } from 'react';
+import dataContext from '../context';
 const CharListItem = ({ src, alt, name, onCharSelected }) => {
   const ref = useRef();
 
@@ -12,6 +12,11 @@ const CharListItem = ({ src, alt, name, onCharSelected }) => {
     classNameImg = `char__item ${isFocus ? 'char__item_selected' : ''}`;
   }
 
+  const context = useContext(dataContext);
+
+  console.log('context: ', context);
+  const buttonColor = context.isFlag ? 'green' : 'red';
+
   return (
     <li
       ref={ref}
@@ -22,6 +27,9 @@ const CharListItem = ({ src, alt, name, onCharSelected }) => {
     >
       <img src={src} alt={alt} />
       <div className="char__name">{name}</div>
+      <button style={{ background: buttonColor }} onClick={context.changeColor}>
+        Click me
+      </button>
     </li>
   );
 };
