@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './charList.scss';
 import useMarvelService from '../../services/MarvelService';
@@ -14,15 +14,16 @@ const CharList = ({ onCharSelected }) => {
 
   const { loading, error, getPaginatedCharacters, clearError } = useMarvelService();
 
-  useEffect(() => {
-    clearError();
-    updateCharList(offset, true);
-  }, []);
-
   const updateCharList = (offset, initial) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
     getPaginatedCharacters(offset).then(onCharListLoaded);
   };
+
+  useEffect(() => {
+    clearError();
+    updateCharList(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onCharListLoaded = (newCharList) => {
     setCharList((charList) => [...charList, ...newCharList]);

@@ -16,6 +16,7 @@ const ComicsList = () => {
   useEffect(() => {
     clearError();
     updateComicsList(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateComicsList = async (offset, initial) => {
