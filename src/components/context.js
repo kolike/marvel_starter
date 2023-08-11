@@ -1,7 +1,8 @@
 import { createContext } from 'react';
 
 const dataContext = createContext({
-  flag: 'ultraFalse',
+  flag: false,
+  setFlag: null,
 });
 
 export default dataContext;

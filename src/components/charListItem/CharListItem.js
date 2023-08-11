@@ -15,7 +15,12 @@ const CharListItem = ({ src, alt, name, onCharSelected }) => {
   const context = useContext(dataContext);
 
   console.log('context: ', context);
-  const buttonColor = context.isFlag ? 'green' : 'red';
+
+  const buttonColor = context.flag ? 'green' : 'red';
+
+  const changeFlag = () => {
+    context.setFlag((flag) => !flag);
+  };
 
   return (
     <li
@@ -27,7 +32,7 @@ const CharListItem = ({ src, alt, name, onCharSelected }) => {
     >
       <img src={src} alt={alt} />
       <div className="char__name">{name}</div>
-      <button style={{ background: buttonColor }} onClick={context.changeColor}>
+      <button style={{ background: buttonColor }} onClick={changeFlag}>
         Click me
       </button>
     </li>

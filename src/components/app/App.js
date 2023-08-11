@@ -10,17 +10,7 @@ const ComicsPage = lazy(() => import('../pages/ComicsPage'));
 const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
 
 const App = () => {
-  const [flag, setFlag] = useState({
-    isFlag: true,
-    changeColor: changeColor,
-  });
-
-  function changeColor() {
-    setFlag({ isFlag: !flag.isFlag, changeColor });
-  }
-
-  console.log('FLAG: ', flag);
-  console.log('changeColor: ', flag.changeColor);
+  const [flag, setFlag] = useState(false);
 
   const { Provider } = dataContext;
 
@@ -36,7 +26,7 @@ const App = () => {
               <Route
                 path="/"
                 element={
-                  <Provider value={flag}>
+                  <Provider value={{ flag, setFlag }}>
                     <MainPage />
                   </Provider>
                 }
