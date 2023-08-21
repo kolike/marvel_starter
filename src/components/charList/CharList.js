@@ -5,6 +5,7 @@ import useMarvelService from '../../services/MarvelService';
 import CharListItem from '../charListItem/CharListItem';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const CharList = ({ onCharSelected }) => {
   const [charList, setCharList] = useState([]);
@@ -34,14 +35,17 @@ const CharList = ({ onCharSelected }) => {
 
   const elements = charList.map((char) => {
     const { id, name, thumbnail } = char;
+
     return (
-      <CharListItem
-        key={id}
-        src={thumbnail}
-        alt={name}
-        name={name}
-        onCharSelected={() => onCharSelected(id)}
-      />
+      <CSSTransition timeout={3000} classNames="char__item char__item_img_not_found">
+        <CharListItem
+          key={id}
+          src={thumbnail}
+          alt={name}
+          name={name}
+          onCharSelected={() => onCharSelected(id)}
+        />
+      </CSSTransition>
     );
   });
 
@@ -52,7 +56,9 @@ const CharList = ({ onCharSelected }) => {
     <div className="char__list">
       {errorMessage}
       {spinner}
-      <ul className="char__grid">{elements}</ul>
+      <ul className="char__grid">
+        <TransitionGroup component={null}>{elements}</TransitionGroup>
+      </ul>
       <button
         className="button button__main button__long"
         disabled={newItemLoading}
