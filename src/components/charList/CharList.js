@@ -37,9 +37,8 @@ const CharList = ({ onCharSelected }) => {
     const { id, name, thumbnail } = char;
 
     return (
-      <CSSTransition timeout={3000} classNames="char__item char__item_img_not_found">
+      <CSSTransition key={id} timeout={3000} classNames="char__item char__item_img_not_found">
         <CharListItem
-          key={id}
           src={thumbnail}
           alt={name}
           name={name}

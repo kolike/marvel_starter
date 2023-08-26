@@ -12,6 +12,7 @@ const SingleComicPage = () => {
 
   useEffect(() => {
     updateComic();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comicId]);
 
   const updateComic = async () => {
