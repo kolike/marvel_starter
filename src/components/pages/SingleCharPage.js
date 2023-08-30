@@ -11,11 +11,11 @@ const SingleCharPage = () => {
   const { loading, error, getCharacter, clearError } = useMarvelService();
 
   useEffect(() => {
-    updateComic();
+    updateChar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [charId]);
 
-  const updateComic = async () => {
+  const updateChar = async () => {
     if (!charId) {
       return;
     }
@@ -38,13 +38,13 @@ const SingleCharPage = () => {
 };
 
 const View = ({ char }) => {
-  const { title, description, thumbnail } = char;
+  const { name, description, thumbnail } = char;
   return (
     <div className="single-comic">
-      <img src={thumbnail} alt={title} className="single-comic__char-img" />
+      <img src={thumbnail} alt={name} className="single-comic__char-img" />
       <div className="single-comic__info">
-        <h2 className="single-comic__name">{title}</h2>
-        <p className="single-comic__descr">{description ? description : 'Description stolen'}</p>
+        <h2 className="single-comic__name">{name}</h2>
+        <p className="single-comic__descr">{description ?? 'Description stolen'}</p>
       </div>
       <Link to="/" className="single-comic__back">
         Back to main page

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Formik, Form, useField } from 'formik';
 import { Link } from 'react-router-dom';
+import useMarvelService from '../../services/MarvelService';
 import './charForm.scss';
 
 const TextInput = ({ status, className, label, ...props }) => {
@@ -14,7 +15,6 @@ const TextInput = ({ status, className, label, ...props }) => {
         <input {...props} {...field} />
       </div>
       <div>{!!status && !!status.message && <div className={className}>{status.message}</div>}</div>
-      {/* {meta.touched && meta.error ? <div className={className}>{meta.error}</div> : null} */}
     </>
   );
 };
@@ -22,7 +22,7 @@ const TextInput = ({ status, className, label, ...props }) => {
 const CharForm = () => {
   const [charId, setCharId] = useState(null);
   const [className, setClassName] = useState(null);
-
+  const { searchCharacter } = useMarvelService();
   return (
     <Formik
       initialValues={{
@@ -39,15 +39,7 @@ const CharForm = () => {
           return;
         }
 
-        const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-        const _apiKey = 'apikey=9b43075eab8aa6697f9f4ccff9e2b743';
-        const res = await fetch(`${_apiBase}characters?name=${values.name}&${_apiKey}`, {
-          method: 'GET',
-          body: null,
-          headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await res.json();
-        const charId = data?.data?.results[0]?.id;
+        const charId = await searchCharacter(values.name);
 
         if (charId) {
           setCharId(charId);
@@ -68,28 +60,20 @@ const CharForm = () => {
           <Form>
             <div className="char__search-form">
               <h2>Or find character by name</h2>
-              <div className="textInput">
-                <TextInput
-                  className={className}
-                  status={status}
-                  id="name"
-                  name="name"
-                  type="text"
-                />
-              </div>
-              <div className="buttonFind">
+              <TextInput className={className} status={status} id="name" name="name" type="text" />
+              <div className="buttons-container">
                 <button type="submit" className="button button__main">
                   <div className="inner">FIND</div>
                 </button>
-              </div>
 
-              {charId !== null ? (
-                <Link to={`/char/${charId}`}>
-                  <button className="button button__secondary">
-                    <div className="inner">TO PAGE</div>
-                  </button>
-                </Link>
-              ) : null}
+                {charId !== null ? (
+                  <Link to={`/char/${charId}`}>
+                    <button className="button button__secondary">
+                      <div className="inner">TO PAGE</div>
+                    </button>
+                  </Link>
+                ) : null}
+              </div>
             </div>
           </Form>
         );

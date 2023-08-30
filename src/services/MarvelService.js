@@ -16,10 +16,9 @@ const useMarvelService = () => {
     return _transformCharacter(res.data.results[0]);
   };
 
-  const getCharacterByName = async (name) => {
+  const searchCharacter = async (name) => {
     const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
-    const data = res.json();
-    return data;
+    return res?.data?.results[0]?.id;
   };
 
   const getPaginatedComics = async (offset) => {
@@ -66,7 +65,7 @@ const useMarvelService = () => {
     clearError,
     getPaginatedComics,
     getComic,
-    getCharacterByName,
+    searchCharacter,
   };
 };
 
